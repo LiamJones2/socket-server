@@ -47,4 +47,5 @@ const io = require("socket.io")(server, {
     });
   });
 
-  module.exports = io;
+  const PORT = 8080;
+  server.listen(PORT, () => console.log(`Listening on ${PORT}...`));
