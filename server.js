@@ -37,7 +37,7 @@ const io = require("socket.io")(server, {
     socket.on('chat message', (msg) => {
       console.log(msg)
       const room = users[socket.id];
-      io.to(room).emit('chat message', msg);
+      socket.broadcast.to(room).emit('chat message', msg);
     });
   
     socket.on('disconnect', () => {
