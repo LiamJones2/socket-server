@@ -38,6 +38,7 @@ const io = require("socket.io")(server, {
       console.log(msg)
       const room = users[socket.id];
       socket.broadcast.to(room).emit('chat message', msg);
+      socket.broadcast.to(room).emit('notification', msg)
     });
   
     socket.on('disconnect', () => {
