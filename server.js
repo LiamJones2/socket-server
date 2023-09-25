@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
 
   socket.on('chat message', (msg) => {
     Object.entries(users).forEach(([socketId, user]) => {
-      if (user === notification.to) {
+      if (user === msg.to) {
         io.to(socketId).emit('chat message', msg);
       }
     });
