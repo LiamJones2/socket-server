@@ -62,8 +62,8 @@ io.on('connection', (socket) => {
 
   socket.on('create room', (dbUser) => {
     if(quizRoomUsers[dbUser.username] === undefined){
-      quizRooms[dbUser.username] = {host: {username: dbUser.username}}
-      io.emit('new room', quizRooms[dbUser.username]);
+      quizRooms.push({host: {username: dbUser.username}})
+      io.emit('new room', {host: {username: dbUser.username}});
     }
   });
 
