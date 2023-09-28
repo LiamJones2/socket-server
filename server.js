@@ -45,7 +45,7 @@ io.on('connection', (socket) => {
 
       Object.entries(users).forEach(([socketId, user]) => {
         if (user === notification.to) {
-          io.to(socketId).emit('notification', `You have received a message from${notification.from}`);
+          io.to(socketId).emit('notification', `${notification.from}`);
         }
       });
     }
