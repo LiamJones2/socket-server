@@ -77,6 +77,7 @@ io.on('connection', (socket) => {
   socket.on('load rooms', (username) => {
     Object.entries(users).forEach(([socketId, user]) => {
       if (username === user) {
+        console.log(quizRooms)
         io.to(socketId).emit('all rooms', quizRooms);
       }
     });
