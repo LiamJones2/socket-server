@@ -63,10 +63,16 @@ io.on('connection', (socket) => {
   socket.on('create room', (dbUser) => {
     if(quizRoomUsers[dbUser.username] === undefined){
       quizRooms[dbUser.username] = {host: {username: dbUser.username}}
-      socket.emit('new room', quizRooms[dbUser.username])
+      io.emit('new room', quizRooms[dbUser.username]);
     }
-    
   });
+
+  socket.on('join room', (dbUser) => {
+    if(quizRoomUsers[dbUser.username] !== undefined){
+      quizRooms[dbUser.username].guests.push(dbUser)
+      socket.emit('joined room', dbUser)
+    }
+  })
 });
 
 const PORT = 8080;
