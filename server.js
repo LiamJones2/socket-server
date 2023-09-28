@@ -23,6 +23,8 @@ app.get('/', (req, res) => {
 });
 
 const users = {};
+const quizRooms = []
+const quizRoomUsers = {}
 
 io.on('connection', (socket) => {
   socket.on('join', (user) => {
@@ -56,6 +58,14 @@ io.on('connection', (socket) => {
     const room = users[socket.id];
     socket.leave(room);
     delete users[socket.id];
+  });
+
+  socket.on('create room', (dbUser) => {
+    if(quizRoomUsers[dbUser.username] === undefined){
+      quizRooms[dbUser.username] = {host: {username: dbUser.username}}
+      socket.emit('new room', quizRooms[dbUser.username])
+    }
+    
   });
 });
 
