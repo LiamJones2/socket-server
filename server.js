@@ -73,6 +73,11 @@ io.on('connection', (socket) => {
       socket.emit('joined room', dbUser)
     }
   })
+
+  socket.on('load rooms', (targetSocketId) => {
+    io.to(targetSocketId).emit('all rooms', quizRooms);
+  });
+
 });
 
 const PORT = 8080;
