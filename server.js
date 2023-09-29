@@ -86,7 +86,7 @@ io.on('connection', (socket) => {
     });
   });
 
-  socket.on('next question', (dbUser, roomId) => {
+  socket.on('next question', (roomId) => {
     const room = quizRooms.find((room) => room.host.username === roomId);
     if (room) {
       io.emit('new question', qa);
