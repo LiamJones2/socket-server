@@ -61,18 +61,21 @@ io.on('connection', (socket) => {
   });
 
   socket.on('create room', (dbUser) => {
-    if(quizRoomUsers[dbUser.username] === undefined){
-      quizRooms.push({host: {username: dbUser.username}})
-      io.emit('new room', {host: {username: dbUser.username}});
+    if (!quizRooms.find((room) => room.host.username === dbUser.username)) {
+      const room = { host: dbUser, guests: [] };
+      quizRooms.push(room);
+      io.emit('new room', room);
     }
   });
 
-  socket.on('join room', (dbUser) => {
-    if(quizRoomUsers[dbUser.username] !== undefined){
-      quizRooms[dbUser.username].guests.push(dbUser)
-      socket.emit('joined room', dbUser)
+  socket.on('join room', (dbUser, roomId) => {
+    const room = quizRooms.find((room) => room.host.username === roomId);
+    if (room) {
+      room.guests.push(dbUser);
+      io.emit('updated room', quizRooms);
     }
-  })
+  });
+
 
   socket.on('load rooms', (username) => {
     Object.entries(users).forEach(([socketId, user]) => {
