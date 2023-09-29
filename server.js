@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const { createServer } = require('http');
 const { join } = require('path');
+const qa = require("./q&a")
 
 const cors = require('cors');
 
@@ -83,6 +84,13 @@ io.on('connection', (socket) => {
         io.to(socketId).emit('all rooms', quizRooms);
       }
     });
+  });
+
+  socket.on('next question', (dbUser, roomId) => {
+    const room = quizRooms.find((room) => room.host.username === roomId);
+    if (room) {
+      io.emit('new question', qa);
+    }
   });
 
 });
