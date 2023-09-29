@@ -62,7 +62,7 @@ io.on('connection', (socket) => {
 
   socket.on('create room', (dbUser) => {
     if (!quizRooms.find((room) => room.host.username === dbUser.username)) {
-      const room = { host: dbUser, guests: [] };
+      const room = { host: dbUser, socketId: socket.id, guests: [] }; 
       quizRooms.push(room);
       io.emit('new room', room);
     }
@@ -71,16 +71,15 @@ io.on('connection', (socket) => {
   socket.on('join room', (dbUser, roomId) => {
     const room = quizRooms.find((room) => room.host.username === roomId);
     if (room) {
-      room.guests.push(dbUser);
-      io.emit('updated room', quizRooms);
+      room.guests.push({ user: dbUser, socketId: socket.id }); 
+      io.emit('updated room', room);
     }
   });
-
 
   socket.on('load rooms', (username) => {
     Object.entries(users).forEach(([socketId, user]) => {
       if (username === user) {
-        console.log(quizRooms)
+        console.log(quizRooms);
         io.to(socketId).emit('all rooms', quizRooms);
       }
     });
