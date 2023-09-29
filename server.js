@@ -6,7 +6,7 @@ const qa = require("./q&a")
 
 const cors = require('cors');
 
-
+console.log(qa)
 const activeUsers = new Map();
 
 const server = createServer(app);
@@ -89,7 +89,7 @@ io.on('connection', (socket) => {
   socket.on('next question', (roomId) => {
     const room = quizRooms.find((room) => room.host.username === roomId);
     if (room) {
-      io.emit('new question', qa);
+      io.emit('new question', qa[0]);
     }
   });
 
